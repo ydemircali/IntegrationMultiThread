@@ -26,12 +26,13 @@ namespace Integration.Service
         {
             // Check the backend to see if the content is already saved.
 
-            if (ItemIntegrationBackend.FindItemsWithContent(itemContent).Count != 0)
+            if (ItemIntegrationBackend.FindItemsWithContent(itemContent))
             {
                 return new Result(false, $"Duplicate item receied with content {itemContent}.");
             }
 
             Item item = ItemIntegrationBackend.SaveItem(itemContent);
+
 
             return new Result(true, $"Item with content {itemContent} saved with id {item.Id}");
 

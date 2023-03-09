@@ -10,12 +10,12 @@ namespace Integration.Backend
 {
     public class ItemOperationBackend
     {
-        private ConcurrentBag<Item> SavedItems { get; set; }
+        private ConcurrentDictionary<string, Item> SavedItems { get; set; }
         private int identitySequence = 0;
 
         public ItemOperationBackend()
         {
-            SavedItems = new ConcurrentBag<Item>();
+            SavedItems = new ConcurrentDictionary<string, Item>();
         }
 
         public Item SaveItem(string itemContent)
@@ -27,14 +27,15 @@ namespace Integration.Backend
             Item item = new Item();
             item.Content = itemContent;
             item.Id = GetNextIdentity();
-            SavedItems.Add(item);
+            SavedItems.TryAdd(itemContent, item);
+
 
             return item;
         }
 
-        public List<Item> FindItemsWithContent(string itemContent)
+        public bool FindItemsWithContent(string itemContent)
         {
-            return this.SavedItems.Where(x => x.Content == itemContent).ToList();
+            return this.SavedItems.ContainsKey(itemContent);
         }
 
         private int GetNextIdentity()
@@ -44,7 +45,7 @@ namespace Integration.Backend
 
         public List<Item> GetAllItems()
         {
-            return this.SavedItems.ToList();
+            return this.SavedItems.Values.ToList();
         }
     }
 }
