@@ -18,11 +18,11 @@ namespace Integration.Backend
             SavedItems = new ConcurrentDictionary<string, Item>();
         }
 
-        public Item SaveItem(string itemContent)
+        public async Task<Item> SaveItem(string itemContent)
         {
             // This simulates how long it takes to save
             // the item content. Forty seconds, give or take.
-            Thread.Sleep(2_000);
+            await Task.Delay(2_000);
 
             Item item = new Item();
             item.Content = itemContent;
