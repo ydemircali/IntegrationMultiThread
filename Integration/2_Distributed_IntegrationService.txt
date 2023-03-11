@@ -1,3 +1,12 @@
 ﻿
 2.
-Eger Service katmani distributed seklinde olsaydi, concurreny icin yine 
+Dagitilmis bir sistemde Backend katmani veya Data katmaninda duzenleme sansimiz olsaydi concurrency bu katmanda saglardik.
+Bu durumda backend-data katmani onundeki  Service katmani horizontal scale edilmis olmasi bizi ilgilendirmezdi.
+
+Ancak yine katmanlarin bagimsiz oldugunu dusundugumuzde ve Service katmaninin bizim urunumuz oldugunu dusunursek;
+Eger horizontal scale edersek ConcurrentDictionary bizim istegimizi karsilamayacaktir. Cunku local concurreny saglamis oluruz.
+Distributed sistem oldugundan her bir instance in ortak olarak erisebilecegi bir resource olmali. 
+Ornek olarak key/value database olan Redis verilebilir. Arkasinda Redis olan bir mikroservis ile DLM yani Distributed Lock Manager kurmus oluruz.
+Redise uniqueu degerler yazilir ve kontrol edilir. 
+Distributed Service katmani bu microservice isteklerde bulunur basarili islemlerde Backend tarafina pass edilir. 
+ConcurrentDictionary collection un bir nevi distributed halini dusunebiliriz.
