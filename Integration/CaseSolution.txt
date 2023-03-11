@@ -1,0 +1,3 @@
+﻿
+Oncelikle sadece Service katmaninda degisiklik yapilmasi gerektigi yazilmis. 
+Ancak her ne kadar multithread islemlerinde ConcurrentBag 
