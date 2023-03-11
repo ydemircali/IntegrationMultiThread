@@ -27,19 +27,29 @@ namespace Integration.Service
         // be allowed for performance reasons.
         public async Task<Result> SaveItem(string itemContent)
         {
-            // Check the backend to see if the content is already saved.
-            if (!SentItems.ContainsKey(itemContent) && SentItems.TryAdd(itemContent, itemContent))
+            bool isSuccess = false;
+            Item item = new Item();
+            await Task.Run(() =>
             {
-                Item item = ItemIntegrationBackend.SaveItem(itemContent);
+                // Check the backend to see if the content is already saved.
+                if (!SentItems.ContainsKey(itemContent) && SentItems.TryAdd(itemContent, itemContent))
+                {
+                    item = ItemIntegrationBackend.SaveItem(itemContent);
+                    isSuccess = true;
+                }
+                else
+                {
+                    isSuccess = false;
+                }
+            });
+
+            if(isSuccess){
                 return new Result(true, $"Item with content {itemContent} saved with id {item.Id}");
             }
             else
             {
                 return new Result(false, $"Duplicate item receied with content {itemContent}.");
             }
-
-           
-
         }
 
         public List<Item> GetAllItems()
