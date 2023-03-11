@@ -1,0 +1,16 @@
+﻿
+1.
+Problemin cozumu icin belirlediginiz kurallarda sadece Service katmaninda degisiklik yapabilirsiniz demissiniz.
+Eger Backend katmanina da izin verseydiniz ConcurrentBag yerine yine thrad-safe collection olan ConcurrentDictionary
+kullanarak duplicate object lere kolaylikla izin vermeyerek sorunu cozerdik.
+Ancak tahmin ediyorum ki bu senaryoda Backend tarafi bizden bagimsiz ve bizim urunumuz daha cok Service katmani.
+
+Bu yuzden cozum olarak Backend tarafinda dusundugum ConcurrentDictionary collection u Service katmaninda uyguladim.
+Gelen objeleri collection a kaydettim ancak bunu yaparken daha oncesinde varligini kontrol ettim.
+Backend tarafinda kontrol edilen methodu kullanmamis oldum, cunku artik Service katmaninda bu kontrolu yapiyoruz.
+Backend e sadece kaydedecegimiz objeleri gondermis oluyoruz.
+
+Gonderilen kod halihazirda multithread sekildeydi. Concurreny de yapilan degisiklik ile de saglanmis oluyor. 
+Hem ThreadPool u daha efektif kullanmak icin hem de paralelligi de saglamak icin TPL kutuphanesi kullandim.
+Service katmaninda SaveItem methodunu da async olarak degistirerek cagrilarin paralel oalrak islenmesini sagladim.
+Ornek olmasinda acisindam Program.cs de Task ler ile servisi cagirdim.
