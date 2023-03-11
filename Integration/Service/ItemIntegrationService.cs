@@ -22,7 +22,7 @@ namespace Integration.Service
         // More than one item with the same content should not be saved. However,
         // calling this with different contents at the same time is OK, and should
         // be allowed for performance reasons.
-        public async Task<Result> SaveItemAsync(string itemContent)
+        public async Task<Result> SaveItem(string itemContent)
         {
             // Check the backend to see if the content is already saved.
 
