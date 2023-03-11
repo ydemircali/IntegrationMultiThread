@@ -7,18 +7,13 @@ namespace Integration {
         {
             ItemIntegrationService service = new ItemIntegrationService();
 
-
-            ThreadPool.QueueUserWorkItem((x) => service.SaveItem("a"));
-            ThreadPool.QueueUserWorkItem((x) => service.SaveItem("b"));
-            ThreadPool.QueueUserWorkItem((x) => service.SaveItem("c"));
-
-            Thread.Sleep(500);
-
-            ThreadPool.QueueUserWorkItem((x) => service.SaveItem("a"));
-            ThreadPool.QueueUserWorkItem((x) => service.SaveItem("b"));
-            ThreadPool.QueueUserWorkItem((x) => service.SaveItem("c"));
-
-            Thread.Sleep(5000);
+            var t0 = Task.Run(async () => { await service.SaveItem("a"); });
+            var t1 = Task.Run(async () => { await service.SaveItem("b"); });
+            var t2 = Task.Run(async () => { await service.SaveItem("c"); });
+            var t3 = Task.Run(async () => { await service.SaveItem("a"); });
+            var t4 = Task.Run(async () => { await service.SaveItem("b"); });
+            var t5 = Task.Run(async () => { await service.SaveItem("c"); });
+            Task.WaitAll(t0, t1, t2, t4, t5);
 
             Console.WriteLine("Everything recorded:");
 
